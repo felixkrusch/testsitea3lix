@@ -1,0 +1,86 @@
+---
+import type { MarkdownInstance } from 'astro';
+import restaurant from '../content/restaurant.json';
+import '../styles/global.css';
+
+interface Dish {
+  title: string;
+  price: string;
+  course: string;
+  order: number;
+}
+
+const dishes = Object.values(import.meta.glob<MarkdownInstance<Dish>>('../content/menu/*.md', { eager: true }))
+  .sort((a, b) => a.frontmatter.order - b.frontmatter.order);
+const courses = [...new Set(dishes.map((dish) => dish.frontmatter.course))];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Juniper is a fictional neighbourhood kitchen serving seasonal small plates, generous mains, and something sweet." />
+    <meta name="theme-color" content="#442344" />
+    <title>{restaurant.name} | A neighbourhood kitchen</title>
+    <link rel="icon" href="/plate.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="/" aria-label={`${restaurant.name} home`}>{restaurant.name}<span>.</span></a>
+      <nav aria-label="Main navigation">
+        <a href="#menu">The menu</a>
+        <a href="#story">Our kitchen</a>
+        <a class="nav-visit" href="#visit">Come on over <span aria-hidden="true">&#8599;</span></a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="welcome">
+        <div class="hero-copy">
+          <p class="eyebrow">Your neighbourhood kitchen</p>
+          <h1 id="welcome">Good food.<br />Better <em>company.</em></h1>
+          <p class="hero-description">{restaurant.tagline}</p>
+          <a class="button" href="#menu">Pull up the menu <span aria-hidden="true">&#8595;</span></a>
+        </div>
+        <div class="hero-art">
+          <img src="/plate.svg" width="640" height="640" alt="Illustration of roasted squash, butter beans, and sage on a ceramic plate" fetchpriority="high" />
+          <div class="kitchen-note"><span>From our kitchen</span><strong>{restaurant.announcement}</strong></div>
+        </div>
+      </section>
+      <section id="menu" class="menu-section" aria-labelledby="menu-heading">
+        <div class="wrap">
+          <div class="section-heading">
+            <div><p class="eyebrow">Made for right now</p><h2 id="menu-heading">What's cooking</h2></div>
+            <p>A few good ingredients.<br />A menu that follows the season.</p>
+          </div>
+          <div class="menu-grid">
+            {courses.map((course) => (
+              <section class="menu-course" aria-label={course}>
+                <h3>{course}</h3>
+                {dishes.filter((dish) => dish.frontmatter.course === course).map((dish) => (
+                  <article class="dish">
+                    <div class="dish-heading"><h4>{dish.frontmatter.title}</h4><span class="price">&pound;{dish.frontmatter.price}</span></div>
+                    <dish.Content />
+                  </article>
+                ))}
+              </section>
+            ))}
+          </div>
+          <p class="allergy-note">{restaurant.allergyNote}</p>
+        </div>
+      </section>
+      <section id="story" class="story wrap" aria-labelledby="story-heading">
+        <p class="eyebrow">No special occasion needed</p>
+        <h2 id="story-heading">A long lunch.<br />A second helping.<br /><em>Your usual table.</em></h2>
+        <p>We like our plates generous and our evenings unhurried. Our little kitchen cooks with the season, keeps things simple, and always leaves room for dessert. Drop in with a friend, bring the whole family, or find a quiet corner just for you.</p>
+      </section>
+      <section id="visit" class="visit" aria-labelledby="visit-heading">
+        <div class="wrap visit-grid">
+          <div><p class="eyebrow">We'll put the kettle on</p><h2 id="visit-heading">See you<br /><em>at Juniper.</em></h2><p>{restaurant.address}</p><p class="demo-note">Fictional restaurant and address. This is an a3lix test website.</p></div>
+          <div class="hours"><h3>Opening hours</h3><dl>{restaurant.hours.map((hours) => <div><dt>{hours.days}</dt><dd>{hours.time}</dd></div>)}</dl><p>Walk-ins welcome. Menu prices are in GBP.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer class="wrap"><a class="wordmark" href="/">{restaurant.name}<span>.</span></a><p>A small restaurant. A good place to be.</p><a href="#menu">Back to the menu &#8593;</a></footer>
+  </body>
+</html>

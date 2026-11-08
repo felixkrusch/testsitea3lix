@@ -1,0 +1,17 @@
+{
+  "name": "testsitea3lix",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321 --ignore-lock",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321"
+  },
+  "dependencies": {
+    "astro": "7.4.7"
+  },
+  "engines": {
+    "node": ">=22.23.4"
+  }
+}

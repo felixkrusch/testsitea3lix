@@ -1,0 +1,13 @@
+{
+  "name": "Juniper",
+  "tagline": "A little seasonal. A little spontaneous. Always a good table.",
+  "announcement": "Our autumn menu is on the table.",
+  "address": "12 Market Lane, Sampletown",
+  "hours": [
+    { "days": "Tuesday - Thursday", "time": "17:00 - 22:00" },
+    { "days": "Friday - Saturday", "time": "12:00 - 23:00" },
+    { "days": "Sunday", "time": "12:00 - 20:00" },
+    { "days": "Monday", "time": "Closed" }
+  ],
+  "allergyNote": "Please tell our team about allergies before ordering. Our kitchen handles common allergens."
+}
