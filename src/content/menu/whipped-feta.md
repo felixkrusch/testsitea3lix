@@ -1,6 +1,6 @@
 ---
 title: Whipped feta
-price: "8"
+price: "9"
 course: Small plates
 order: 1
 ---
